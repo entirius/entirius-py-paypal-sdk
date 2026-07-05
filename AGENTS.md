@@ -1,0 +1,27 @@
+# AGENTS.md
+
+PayPal payment gateway SDK — distribution `entirius-py-paypal-sdk`, import `paypal_sdk`.
+
+## Commands
+
+| Command | Meaning |
+|---|---|
+| `make install` | sync dependencies (uv, incl. extras) |
+| `make check` | lint + format-check (ruff) |
+| `make fix` | auto-fix lint + format |
+| `make test` | test suite (pytest) |
+
+## Conventions
+
+- English only: code, docs, commits, branches, PRs.
+- MPL-2.0: every non-trivial source file carries the license header (pre-commit inserts it).
+- Toolchain: uv + ruff + hatchling + pytest; all config in `pyproject.toml`; `uv.lock` committed.
+- Git flow: `master` (production) + `develop` (integration); changes land via PR; semver tag on `master`.
+- Never rename the import package `paypal_sdk` — it is a public API contract.
+- Default: do not commit — git is the user's call.
+
+## Architecture
+
+`paypal_sdk/`: `PayPal` client (`services/` — OAuth authorize, create order) over the PayPal REST API,
+with request/response DTOs in `dto/`. Runtime dependency: `requests`.
+The integration test hits the PayPal sandbox and is skipped without `PAYPAL_SANDBOX_*` env vars.
