@@ -19,9 +19,12 @@ PayPal payment gateway SDK — distribution `entirius-py-paypal-sdk`, import `pa
 - Git flow: `master` (production) + `develop` (integration); changes land via PR; semver tag on `master`.
 - Never rename the import package `paypal_sdk` — it is a public API contract.
 - Default: do not commit — git is the user's call.
+- No AI attribution in commits or PR descriptions.
 
 ## Architecture
 
-`paypal_sdk/`: `PayPal` client (`services/` — OAuth authorize, create order) over the PayPal REST API,
-with request/response DTOs in `dto/`. Runtime dependency: `requests`.
+`src/paypal_sdk/`: `services/client.py` holds the `PayPal` client (OAuth authorize, create order, get order,
+capture) over the PayPal REST API; the token lives in `services/auth.py`, the HTTP wrapper in
+`services/request.py`, request and response DTOs in `dto/`, response checks in `validators/`.
+Runtime dependency: `requests`.
 The integration test hits the PayPal sandbox and is skipped without `PAYPAL_SANDBOX_*` env vars.
